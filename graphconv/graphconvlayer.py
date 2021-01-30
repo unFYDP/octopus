@@ -1,7 +1,7 @@
 import tensorflow as tf
 
-from tf.keras.layers import Layer
-from tf.keras import initializers, activations
+from tensorflow.keras.layers import Layer
+from tensorflow.keras import initializers, activations
 from .util import sparse_dot_adj_batch
 
 

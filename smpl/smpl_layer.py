@@ -1,7 +1,7 @@
 import tensorflow as tf
 from .batch_smpl import SMPL
 from .joints import joints_body25, face_landmarks
-from keras.engine.topology import Layer
+from tf.keras.layers import Layer
 
 
 class SmplTPoseLayer(Layer):

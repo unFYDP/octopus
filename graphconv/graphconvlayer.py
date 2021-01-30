@@ -1,6 +1,7 @@
-import keras.backend as K
-from keras.engine.topology import Layer
-from keras.layers import initializers, activations
+import tensorflow as tf
+
+from tf.keras.layers import Layer
+from tf.keras import initializers, activations
 from .util import sparse_dot_adj_batch
 
 
@@ -37,7 +38,7 @@ class GraphConvolution(Layer):
     def call(self, x):
         supports = list()
         for s, k in zip(self.support, self.kernels):
-            pre_sup = K.dot(x, k)
+            pre_sup = tf.compat.v1.keras.backend.dot(x, k)
             supports.append(sparse_dot_adj_batch(s, pre_sup))
 
         output = supports[0]

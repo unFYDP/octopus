@@ -3,12 +3,12 @@ import cv2
 import sys
 import numpy as np
 import tensorflow as tf
-import keras.backend as K
+import tf.compat.v1.keras.backend as K
 
-from keras.layers import Input, Flatten, Dense, Lambda, Conv2D, MaxPool2D, Average, Concatenate, Add, Reshape
-from keras.initializers import RandomNormal
-from keras.models import Model
-from keras.callbacks import LambdaCallback
+from tf.keras.layers import Input, Flatten, Dense, Lambda, Conv2D, MaxPool2D, Average, Concatenate, Add, Reshape
+from tf.keras.initializers import RandomNormal
+from tf.keras.models import Model
+from tf.keras.callbacks import LambdaCallback
 from tqdm import tqdm
 
 from smpl.smpl_layer import SmplTPoseLayer, SmplBody25FaceLayer

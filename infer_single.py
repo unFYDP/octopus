@@ -1,7 +1,6 @@
 import os
 import argparse
 import tensorflow as tf
-import keras.backend as K
 
 from glob import glob
 
@@ -16,7 +15,7 @@ def main(weights, name, segm_dir, pose_dir, out_dir, opt_pose_steps, opt_shape_s
     if len(segm_files) != len(pose_files) or len(segm_files) == len(pose_files) == 0:
         exit('Inconsistent input.')
 
-    K.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(allow_growth=True))))
+    tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(allow_growth=True))))
 
     model = Octopus(num=len(segm_files))
     model.load(weights)

@@ -60,7 +60,7 @@ def undo_chumpy(x):
 def sparse_to_tensor(x, dtype=tf.float32):
     coo = x.tocoo()
     indices = np.mat([coo.row, coo.col]).transpose()
-    return tf.SparseTensor(indices, tf.convert_to_tensor(coo.data, dtype=dtype), coo.shape)
+    return tf.SparseTensor(indices, tf.convert_to_tensor(value=coo.data, dtype=dtype), coo.shape)
 
 
 class SMPL(object):
@@ -131,8 +131,8 @@ class SMPL(object):
           - Verts: N x 6980 x 3
         """
 
-        with tf.name_scope(name, "smpl_main", [beta, theta, trans, v_personal]):
-            num_batch = tf.shape(beta)[0]
+        with tf.compat.v1.name_scope(name, "smpl_main", [beta, theta, trans, v_personal]):
+            num_batch = tf.shape(input=beta)[0]
 
             # 1. Add shape blend shapes
             # (N x 10) x (10 x 6890*3) = N x 6890 x 3
@@ -147,9 +147,9 @@ class SMPL(object):
             self.v_shaped_personal = self.v_shaped + v_personal
 
             # 2. Infer shape-dependent joint locations.
-            Jx = tf.transpose(tf.sparse_tensor_dense_matmul(self.J_regressor, tf.transpose(v_shaped_scaled[:, :, 0])))
-            Jy = tf.transpose(tf.sparse_tensor_dense_matmul(self.J_regressor, tf.transpose(v_shaped_scaled[:, :, 1])))
-            Jz = tf.transpose(tf.sparse_tensor_dense_matmul(self.J_regressor, tf.transpose(v_shaped_scaled[:, :, 2])))
+            Jx = tf.transpose(a=tf.sparse.sparse_dense_matmul(self.J_regressor, tf.transpose(a=v_shaped_scaled[:, :, 0])))
+            Jy = tf.transpose(a=tf.sparse.sparse_dense_matmul(self.J_regressor, tf.transpose(a=v_shaped_scaled[:, :, 1])))
+            Jz = tf.transpose(a=tf.sparse.sparse_dense_matmul(self.J_regressor, tf.transpose(a=v_shaped_scaled[:, :, 2])))
             J = scale * tf.stack([Jx, Jy, Jz], axis=2)
 
             # 3. Add pose blend shapes
@@ -161,10 +161,10 @@ class SMPL(object):
                 if self.theta_is_perfect_rotmtx:
                     Rs = theta
                 else:
-                    s, u, v = tf.svd(theta)
-                    Rs = tf.matmul(u, tf.transpose(v, perm=[0, 1, 3, 2]))
+                    s, u, v = tf.linalg.svd(theta)
+                    Rs = tf.matmul(u, tf.transpose(a=v, perm=[0, 1, 3, 2]))
 
-            with tf.name_scope("lrotmin"):
+            with tf.compat.v1.name_scope("lrotmin"):
                 # Ignore global rotation.
                 pose_feature = tf.reshape(Rs[:, 1:, :, :] - tf.eye(3), [-1, 207])
 

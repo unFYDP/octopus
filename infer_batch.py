@@ -11,7 +11,7 @@ from model.octopus import Octopus
 
 
 def main(weights, num, batch_file, opt_pose_steps, opt_shape_steps):
-    K.set_session(tf.Session(config=tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))))
+    K.set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=tf.compat.v1.GPUOptions(allow_growth=True))))
 
     model = Octopus(num=num)
 

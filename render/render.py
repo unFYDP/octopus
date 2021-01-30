@@ -31,7 +31,7 @@ def perspective_projection(f, c, w, h, near=0.1, far=10., name=None):
             [0., 0., -1., 0.]
         ]
 
-        return tf.transpose(tf.convert_to_tensor(elements, dtype=tf.float32))
+        return tf.transpose(a=tf.convert_to_tensor(value=elements, dtype=tf.float32))
 
 
 def render_colored_batch(m_v, m_f, m_vc, width, height, camera_f, camera_c, bgcolor=np.zeros(3, dtype=np.float32),
@@ -48,14 +48,14 @@ def render_colored_batch(m_v, m_f, m_vc, width, height, camera_f, camera_c, bgco
         )
 
         bg = tf.tile(bgcolor.astype(np.float32)[np.newaxis, np.newaxis, np.newaxis, :],
-                     (tf.shape(m_v)[0], height, width, 1))
-        m_vc = tf.tile(tf.cast(m_vc, tf.float32)[np.newaxis, ...], (tf.shape(m_v)[0], 1, 1))
+                     (tf.shape(input=m_v)[0], height, width, 1))
+        m_vc = tf.tile(tf.cast(m_vc, tf.float32)[np.newaxis, ...], (tf.shape(input=m_v)[0], 1, 1))
 
         m_v = tf.cast(m_v, tf.float32)
         m_v = tf.concat([m_v, tf.ones_like(m_v[:, :, -1:])], axis=2)
-        m_v = tf.matmul(m_v, tf.tile(view_matrix[np.newaxis, ...], (tf.shape(m_v)[0], 1, 1)))
-        m_v = tf.matmul(m_v, tf.tile(projection_matrix[np.newaxis, ...], (tf.shape(m_v)[0], 1, 1)))
+        m_v = tf.matmul(m_v, tf.tile(view_matrix[np.newaxis, ...], (tf.shape(input=m_v)[0], 1, 1)))
+        m_v = tf.matmul(m_v, tf.tile(projection_matrix[np.newaxis, ...], (tf.shape(input=m_v)[0], 1, 1)))
 
-        m_f = tf.tile(tf.cast(m_f, tf.int32)[np.newaxis, ...], (tf.shape(m_v)[0], 1, 1))
+        m_f = tf.tile(tf.cast(m_f, tf.int32)[np.newaxis, ...], (tf.shape(input=m_v)[0], 1, 1))
 
         return dirt.rasterise_batch(bg, m_v, m_vc, m_f, name=name)

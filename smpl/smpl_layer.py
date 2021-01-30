@@ -30,7 +30,7 @@ class SmplBody25FaceLayer(Layer):
 
     def call(self, arguments):
         pose, betas, trans=arguments
-        v_personal = tf.tile(tf.zeros((1, 6890, 3)), (tf.shape(betas)[0], 1, 1))
+        v_personal = tf.tile(tf.zeros((1, 6890, 3)), (tf.shape(input=betas)[0], 1, 1))
 
         v = self.smpl(pose, betas, trans, v_personal)
 

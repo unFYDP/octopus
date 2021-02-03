@@ -263,7 +263,7 @@ class Octopus(object):
         self.opt_shape_model.compile(loss=opt_shape_loss, loss_weights=opt_shape_weights, optimizer='adam')
 
     def load(self, checkpoint_path):
-        self.inference_model.load_weights(checkpoint_path, by_name=True)
+        self.inference_model.load_weights(checkpoint_path)
 
     def opt_pose(self, segmentations, joints_2d, opt_steps):
         data = {}

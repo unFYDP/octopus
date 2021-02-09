@@ -1,5 +1,8 @@
 scipy>=1.0.0
 numpy>=1.16
-Keras>=2.2.0
-tensorflow_gpu>=1.11.0
+keras==2.2.4
+tensorflow==1.15
+tensorflow-gpu==1.15
+tqdm
+chumpy
 dirt

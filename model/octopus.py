@@ -48,7 +48,7 @@ def symmetry_mse(_, ypred):
 def reprojection(fl, cc, w, h):
 
     def _r(ytrue, ypred):
-        b_size = tf.shape(input=ypred)[0]
+        b_size = tf.shape(ypred)[0]
         projection_matrix = perspective_projection(fl, cc, w, h, .1, 10)
         projection_matrix = tf.tile(tf.expand_dims(projection_matrix, 0), (b_size, 1, 1))
 
@@ -80,7 +80,7 @@ class Octopus(object):
         pose = tf.reshape(batch_rodrigues(pose_raw.reshape(-1, 3).astype(np.float32)), (-1, ))
         trans = np.array([0., 0.2, -2.3])
 
-        batch_size = tf.shape(input=images[0])[0]
+        batch_size = tf.shape(images[0])[0]
 
         conv2d_0 = Conv2D(8, (3, 3), strides=(2, 2), activation='relu', kernel_initializer='he_normal', trainable=False)
         maxpool_0 = MaxPool2D((2, 2))
